@@ -1,0 +1,28 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "literal-request",
+  "revision": 1,
+  "next_step": "clarify",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review my app and tell me what needs fixing."
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review my app and tell me what needs fixing.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [],
+  "conflicts": []
+}

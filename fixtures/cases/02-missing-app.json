@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "missing-app",
+  "revision": 1,
+  "next_step": "inspect",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review my app and tell me what needs fixing."
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review my app and tell me what needs fixing.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "app-location",
+      "question": "Which app or supplied material should be reviewed?",
+      "necessity": "required",
+      "blocks": ["inspect", "execute"],
+      "next_action": "ask_user",
+      "status": "open"
+    }
+  ],
+  "conflicts": []
+}

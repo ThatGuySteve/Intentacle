@@ -1,0 +1,47 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "rejected-scope",
+  "revision": 2,
+  "next_step": "clarify",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review my app and tell me what needs fixing."
+    },
+    {
+      "id": "scope-answer",
+      "kind": "user_answer",
+      "availability": "supplied",
+      "content": "Do a general review; I am not asking for a release decision.",
+      "applies_to": ["release-review"]
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review my app and tell me what needs fixing.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "release-review",
+      "kind": "objective",
+      "text": "Assess production readiness.",
+      "origin": "inferred",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "rejected",
+        "source_id": "scope-answer"
+      },
+      "rationale": "Release readiness was suggested as a possible scope."
+    }
+  ],
+  "unknowns": [],
+  "conflicts": []
+}

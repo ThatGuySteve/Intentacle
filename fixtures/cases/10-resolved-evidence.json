@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "resolved-evidence",
+  "revision": 1,
+  "next_step": "plan",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Plan a session migration after checking the current authentication mechanism."
+    },
+    {
+      "id": "session-notes",
+      "kind": "document",
+      "availability": "supplied",
+      "locator": "example/session-notes.txt",
+      "content": "The current example app uses server-side sessions stored in a database."
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Plan a session migration after checking the current authentication mechanism.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "auth-context",
+      "kind": "context",
+      "text": "The supplied notes report server-side sessions stored in a database.",
+      "origin": "source_reported",
+      "source_ids": ["session-notes"],
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "auth-mechanism",
+      "question": "What authentication mechanism is currently documented?",
+      "necessity": "required",
+      "blocks": ["plan", "execute"],
+      "next_action": "inspect_source",
+      "status": "resolved",
+      "resolution": {
+        "text": "The supplied notes describe server-side database sessions.",
+        "source_ids": ["session-notes"]
+      }
+    }
+  ],
+  "conflicts": []
+}

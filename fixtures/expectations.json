@@ -1,0 +1,122 @@
+[
+  {
+    "name": "01-literal-request",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "The literal scaffold adds no SaaS context, review scope, success criteria, or output format."
+  },
+  {
+    "name": "02-missing-app",
+    "expected": {
+      "blocked_steps": ["inspect", "execute"],
+      "active": ["objective-1"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "The app location blocks inspection and execution, while clarification and a general review plan remain possible."
+  },
+  {
+    "name": "03-unconfirmed-scope",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1"],
+      "proposed": ["release-review"],
+      "rejected": []
+    },
+    "scenario": "A plausible narrower interpretation remains an unselected proposal."
+  },
+  {
+    "name": "04-delegated-format",
+    "expected": {
+      "blocked_steps": ["inspect", "execute"],
+      "active": ["objective-1", "findings-list"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "Delegating output format does not supply the missing app or change the assumption into a user-authored fact."
+  },
+  {
+    "name": "05-rejected-scope",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1"],
+      "proposed": [],
+      "rejected": ["release-review"]
+    },
+    "scenario": "Rejected narrowing remains traceable and is excluded from instruction text."
+  },
+  {
+    "name": "06-conflicting-constraints",
+    "expected": {
+      "blocked_steps": ["plan", "execute"],
+      "active": ["objective-1", "upgrade", "no-deps"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "The recorded tradeoff blocks a concrete implementation plan, but inspection can establish what must change."
+  },
+  {
+    "name": "07-explicit-correction",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1", "markdown-output"],
+      "proposed": [],
+      "rejected": ["json-output"]
+    },
+    "scenario": "An explicit user correction records a new revision and preserves the rejected earlier output."
+  },
+  {
+    "name": "08-unavailable-reference",
+    "expected": {
+      "blocked_steps": ["inspect", "plan", "execute"],
+      "active": ["objective-1"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "A locator alone is not inspected evidence; no runtime command fetches it."
+  },
+  {
+    "name": "09-hostile-reference",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1"],
+      "proposed": ["hostile-command"],
+      "rejected": []
+    },
+    "scenario": "Instructions found in external material do not automatically become selected requirements. Quoting is not a model-injection defense guarantee."
+  },
+  {
+    "name": "10-resolved-evidence",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1", "auth-context"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "A supplied document can resolve a recorded evidence question; the tool does not independently verify the document."
+  },
+  {
+    "name": "11-constraint-strength",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1", "signature", "concise"],
+      "proposed": [],
+      "rejected": []
+    },
+    "scenario": "A hard prohibition remains distinct from a preference; optional presentation details do not block work."
+  },
+  {
+    "name": "12-resolved-conflict",
+    "expected": {
+      "blocked_steps": [],
+      "active": ["objective-1", "parser-update"],
+      "proposed": [],
+      "rejected": ["pins"]
+    },
+    "scenario": "A conflict resolution needs a scoped user answer; withdrawing an item is an explicit decision."
+  }
+]
