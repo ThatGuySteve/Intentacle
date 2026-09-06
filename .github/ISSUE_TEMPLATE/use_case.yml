@@ -1,0 +1,35 @@
+name: Use case or design proposal
+description: Explain a real handoff problem and the smallest useful improvement.
+title: "[Use case]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: What task are you trying to hand off?
+      description: Describe a concrete situation without private project data.
+    validations:
+      required: true
+  - type: textarea
+    id: limitation
+    attributes:
+      label: What is difficult with the current record or workflow?
+      description:
+        Explain why existing items, references, unknowns, and conflicts are
+        insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing alternatives and smallest proposed change
+      description:
+        Include a worksheet or ordinary conversation if either would solve the
+        problem.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: How would we know the change helps?
+      description: Describe an observable result or reduced user effort.

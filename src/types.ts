@@ -1,5 +1,5 @@
 export const SCHEMA_VERSION = "0.1.0-draft" as const;
-export const RENDERER_VERSION = "markdown/0.1.0" as const;
+export const RENDERER_VERSION = "markdown/0.1.1" as const;
 
 export type Step = "clarify" | "inspect" | "plan" | "execute";
 export type Origin = "user_stated" | "source_reported" | "inferred" | "default";

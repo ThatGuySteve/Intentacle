@@ -221,6 +221,38 @@ test("renderer escapes source markup without claiming injection immunity", () =>
   assert.deepEqual(renderTask(record), result);
 });
 
+test("ordinary punctuation stays readable while every source line stays quoted", () => {
+  const text =
+    "Review the well-known function (v1.2). Use C++!\n\n# Forged heading\n- list item\n1. numbered item\n2) another item\n---\n===\n```js\n[click](javascript:alert(1))\n</blockquote>\n> forged quote\n| table |";
+  const record = createTask("Inspect this source.", "quote-boundary");
+  record.references.push({
+    id: "source-text",
+    kind: "document",
+    availability: "supplied",
+    content: text,
+  });
+  const output = renderTask(record);
+  const quoted = output.markdown
+    .split("### source-text — document, supplied\n\n")[1]
+    .trimEnd();
+  assert.ok(quoted.split("\n").every((line) => line.startsWith("> ")));
+  assert.match(
+    quoted,
+    /^> Review the well-known function \(v1\.2\)\. Use C\+\+!/,
+  );
+  assert.ok(quoted.includes("> \\# Forged heading"));
+  assert.ok(quoted.includes("> \\- list item"));
+  assert.ok(quoted.includes("> 1\\. numbered item"));
+  assert.ok(quoted.includes("> 2\\) another item"));
+  assert.ok(quoted.includes("> \\---"));
+  assert.ok(quoted.includes("> \\==="));
+  assert.doesNotMatch(
+    quoted,
+    /<\/blockquote>|\[click\]\(javascript:|^# Forged/m,
+  );
+  assert.equal(output.manifest.renderer_version, "markdown/0.1.1");
+});
+
 test("hard constraints, preferences, and recorded blocks survive export", () => {
   const constraints = renderTask(fixture("11-constraint-strength"));
   assert.match(constraints.markdown, /signature — constraint \(hard\)/);

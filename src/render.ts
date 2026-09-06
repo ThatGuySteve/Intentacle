@@ -13,7 +13,9 @@ function quote(text: string): string {
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")
-          .replace(/([\\`*_{}\[\]()#+.!|~\-])/g, "\\$1")}`,
+          .replace(/([\\`*_\[\]|~])/g, "\\$1")
+          .replace(/^([ \t]*)([-+#=])/, "$1\\$2")
+          .replace(/^([ \t]*\d{1,9})([.)])(?=\s|$)/, "$1\\$2")}`,
     )
     .join("\n");
 }

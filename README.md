@@ -1,7 +1,7 @@
 # Intentacle
 
 <p align="center">
-  <img src="assets/intentacle-logo.png" alt="Intentacle: a purple octopus holding a task card" width="360" />
+  <img src="https://raw.githubusercontent.com/ThatGuySteve/Intentacle/433d64c1f8e786547133ae3410cc9e6deca6f36f/assets/intentacle-logo.png" alt="Intentacle: a purple octopus holding a task card" width="360" />
 </p>
 
 **Get a grip on what you meant.**
@@ -43,9 +43,23 @@ node dist/cli.js inspect examples/review.task.json --step inspect
 node dist/cli.js render examples/review.task.json
 ```
 
-The review example is valid but has a recorded blocker for inspection: the app
+The review example is valid and its next step, `inspect`, is blocked: the app
 has not been supplied. Formatting was delegated; that does not answer which app
-to review. Export still works and prominently retains the blocker.
+to review. Ordinary export still works and prominently retains the blocker.
+
+To see the refusal path, run this separately. It prints a blocker diagnostic to
+stderr, produces no export, and deliberately exits with code **3**:
+
+```sh
+node dist/cli.js render examples/review.task.json --require-ready
+```
+
+For a successful guarded export, the distinct `constraints` example includes a
+supplied function and has no recorded inspection blockers:
+
+```sh
+node dist/cli.js render examples/constraints.task.json --require-ready
+```
 
 Create a literal draft and record a decision in separate files:
 
@@ -120,9 +134,15 @@ with no model calls. A packaging smoke test also verifies that the installed CLI
 and library can find the bundled schema.
 
 The next milestone is a bounded extraction and clarification prototype, assessed
-against ordinary conversation and a guided worksheet. See the
-[roadmap](ROADMAP.md) and [evaluation protocol](docs/evaluation.md). Public
-fixtures are development data, not a held-out benchmark.
+against ordinary conversation, a guided worksheet, and a relevant existing tool.
+See the [landscape](docs/landscape.md),
+[defensibility assessment](docs/defensibility.md), [roadmap](ROADMAP.md), and
+[evaluation gates](docs/evaluation.md). Public fixtures are development data,
+not a held-out benchmark.
+
+Read [the security boundary and reporting process](SECURITY.md) before building
+on the record. Community participation follows the
+[code of conduct](CODE_OF_CONDUCT.md).
 
 The planned project is open source; the maintainer's license selection is still
 pending. Package publication is disabled while that decision and the first alpha

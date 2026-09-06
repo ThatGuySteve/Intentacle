@@ -102,6 +102,11 @@ adapter. Hard constraints and material unknowns/conflicts are never silently
 dropped to fit a budget. Markdown source quoting escapes HTML and Markdown
 syntax; it is a presentation boundary, not a proven prompt-injection defense.
 
+Renderer `markdown/0.1.1` preserves ordinary punctuation such as sentence-ending
+periods, parentheses, and mid-line hyphens. It still escapes inline markup,
+HTML, and leading heading/list/rule markers, and prefixes every source line with
+a blockquote marker. The record format has not changed.
+
 ## Editing and compatibility
 
 For now, manually edit the JSON to add statements, resolve questions, or change

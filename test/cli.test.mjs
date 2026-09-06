@@ -49,7 +49,7 @@ test("CLI init, stdin validation, inspection, decision, and manifest export work
 test("validity and readiness have separate exit behavior; blocked exports create no file", () => {
   const folder = mkdtempSync(join(tmpdir(), "intentacle-blocked-"));
   try {
-    const example = join(root, "fixtures/cases/02-missing-app.json");
+    const example = join(root, "examples/review.task.json");
     assert.equal(run(["validate", example]).status, 0);
     assert.equal(run(["render", example]).status, 0);
     const out = join(folder, "blocked.md");
@@ -57,6 +57,13 @@ test("validity and readiness have separate exit behavior; blocked exports create
     assert.equal(result.status, 3);
     assert.equal(result.stdout, "");
     assert.equal(existsSync(out), false);
+    const clear = run([
+      "render",
+      "examples/constraints.task.json",
+      "--require-ready",
+    ]);
+    assert.equal(clear.status, 0, clear.stderr);
+    assert.match(clear.stdout, /No recorded blockers/);
   } finally {
     rmSync(folder, { recursive: true, force: true });
   }

@@ -42,6 +42,14 @@ test("packed install exposes a working CLI, library, declarations, and schema", 
       ),
     )[0];
     const paths = new Set(packed.files.map((file) => file.path));
+    assert.ok(
+      packed.size < 128 * 1024,
+      "The runtime tarball should remain below 128 KiB.",
+    );
+    assert.ok(
+      ![...paths].some((path) => path.startsWith("assets/")),
+      "Artwork belongs in the repository, outside the runtime package.",
+    );
     for (const file of [
       "dist/index.js",
       "dist/index.d.ts",

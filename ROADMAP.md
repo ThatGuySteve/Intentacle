@@ -17,6 +17,13 @@ recorded blockers visible.
 
 ## Next: extraction and clarification experiment
 
+The [landscape](docs/landscape.md) and
+[defensibility assessment](docs/defensibility.md) bound this experiment. Before
+choosing an extraction architecture, inspect the closest existing tools with the
+six provenance probes in the landscape. Prefer a small upstream extension if it
+meets the need. Freeze the evaluation protocol, rubrics, and untouched cases
+before collecting scored results.
+
 1. Define a small inference interface that returns proposed records and
    candidate questions. The caller supplies endpoint configuration; credentials
    stay outside records and exports.
@@ -48,6 +55,12 @@ package; Apache-2.0 is the current proposal, not an applied license.
 Accounts, cloud sync, orchestration, a prompt marketplace, a provider gateway,
 MCP hosting, and broad agent contracts are outside the current scope.
 
-If a guided worksheet or normal conversation performs as well with less effort,
-simplify the product accordingly. More schema fields or adapters are not
-evidence of value.
+Use
+[evaluation protocol v1](docs/evaluation.md#predeclared-decision-gates-version-1)
+to decide: on 40 paired cases, continue for at least four additional successes
+over both simple baselines, or for comparable quality with 25% less handoff
+effort in the human pilot. Safety and cost guards apply to either route. An
+incomplete study is inconclusive, not a win. If the record fails but a worksheet
+qualifies, simplify; if neither qualifies after two bounded redesigns, stop
+standalone feature investment. More schema fields or adapters are not evidence
+of value.

@@ -1,26 +1,41 @@
 {
   "schema_version": "0.1.0-draft",
-  "task_id": "constraint-strength",
+  "task_id": "constraints",
   "revision": 1,
-  "next_step": "clarify",
+  "next_step": "inspect",
   "references": [
     {
       "id": "request-1",
       "kind": "user_request",
       "availability": "supplied",
-      "content": "Review the function. Do not change its public signature. Prefer a concise report."
+      "content": "Review the supplied clamp function for inputs outside the range. Do not change its public signature. Prefer a concise report."
+    },
+    {
+      "id": "function-source",
+      "kind": "document",
+      "availability": "supplied",
+      "locator": "example/clamp.js",
+      "content": "export function clamp(value, min, max) {\n  return Math.min(max, Math.max(min, value));\n}"
     }
   ],
   "items": [
     {
       "id": "objective-1",
       "kind": "objective",
-      "text": "Review the function. Do not change its public signature. Prefer a concise report.",
+      "text": "Review the supplied clamp function for inputs outside the range.",
       "origin": "user_stated",
       "source_ids": ["request-1"],
       "review": {
         "state": "unreviewed"
       }
+    },
+    {
+      "id": "clamp-source",
+      "kind": "context",
+      "text": "The supplied source defines clamp(value, min, max) using Math.min and Math.max.",
+      "origin": "source_reported",
+      "source_ids": ["function-source"],
+      "review": { "state": "unreviewed" }
     },
     {
       "id": "signature",

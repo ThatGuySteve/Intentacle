@@ -4,6 +4,10 @@ Intentacle is an early public prototype. The maintainer is still choosing a
 license. For now, use issues for feedback and design discussion; code
 contributions and package publication should follow that decision.
 
+Read the [code of conduct](CODE_OF_CONDUCT.md) and
+[security reporting guidance](SECURITY.md). Issue forms cover behavior/intent
+loss and concrete use cases; blank issues remain available for other discussion.
+
 Useful feedback begins with a concrete request that the format mishandles, an
 unsupported assumption, a lost constraint, or a clarification that causes more
 work than it saves. Remove private data and credentials from examples.

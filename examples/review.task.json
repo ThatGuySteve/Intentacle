@@ -1,14 +1,14 @@
 {
   "schema_version": "0.1.0-draft",
-  "task_id": "delegated-format",
+  "task_id": "review",
   "revision": 2,
-  "next_step": "clarify",
+  "next_step": "inspect",
   "references": [
     {
       "id": "request-1",
       "kind": "user_request",
       "availability": "supplied",
-      "content": "Review my app and tell me what needs fixing."
+      "content": "Review my app for broken behavior. Identify reproducible problems; do not change any files."
     },
     {
       "id": "format-answer",
@@ -22,12 +22,29 @@
     {
       "id": "objective-1",
       "kind": "objective",
-      "text": "Review my app and tell me what needs fixing.",
+      "text": "Review my app for broken behavior.",
       "origin": "user_stated",
       "source_ids": ["request-1"],
       "review": {
         "state": "unreviewed"
       }
+    },
+    {
+      "id": "review-only",
+      "kind": "constraint",
+      "text": "Do not change any files.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "strength": "hard",
+      "review": { "state": "unreviewed" }
+    },
+    {
+      "id": "reproducible-findings",
+      "kind": "success_criterion",
+      "text": "Identify reproducible problems.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": { "state": "unreviewed" }
     },
     {
       "id": "findings-list",
