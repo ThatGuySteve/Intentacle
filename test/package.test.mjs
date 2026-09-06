@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -49,18 +49,55 @@ test("packed install exposes a working CLI, library, declarations, and schema", 
       "schema/task.schema.json",
     ])
       assert.ok(paths.has(file), `${file} must be packaged`);
+    // npm ci caches tarballs but need not cache registry metadata. Build a
+    // consumer lock from our pinned runtime graph so the smoke install requires
+    // no metadata lookup and works immediately after a clean npm ci.
+    const sourcePackage = JSON.parse(readFileSync(join(root, "package.json")));
+    const sourceLock = JSON.parse(
+      readFileSync(join(root, "package-lock.json")),
+    );
+    const consumer = {
+      name: "intentacle-install-smoke",
+      version: "1.0.0",
+      private: true,
+      type: "module",
+      dependencies: { intentacle: `file:${packed.filename}` },
+    };
+    const runtimePackages = Object.fromEntries(
+      Object.entries(sourceLock.packages).filter(
+        ([path, entry]) => path && !entry.dev,
+      ),
+    );
+    const consumerLock = {
+      name: consumer.name,
+      version: consumer.version,
+      lockfileVersion: 3,
+      requires: true,
+      packages: {
+        "": consumer,
+        ...runtimePackages,
+        "node_modules/intentacle": {
+          version: sourcePackage.version,
+          resolved: `file:${packed.filename}`,
+          integrity: packed.integrity,
+          dependencies: sourcePackage.dependencies,
+          bin: sourcePackage.bin,
+          engines: sourcePackage.engines,
+        },
+      },
+    };
+    writeFileSync(join(folder, "package.json"), JSON.stringify(consumer));
     writeFileSync(
-      join(folder, "package.json"),
-      JSON.stringify({ private: true, type: "module" }),
+      join(folder, "package-lock.json"),
+      JSON.stringify(consumerLock),
     );
     run([
       npm,
-      "install",
+      "ci",
       "--offline",
       "--ignore-scripts",
       "--no-audit",
       "--no-fund",
-      join(folder, packed.filename),
     ]);
     const cli = join(folder, "node_modules/intentacle/dist/cli.js");
     assert.match(run([cli, "--version"]), /0\.1\.0-dev\.0/);
