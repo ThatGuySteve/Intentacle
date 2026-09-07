@@ -1,0 +1,56 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "explicit-correction",
+  "revision": 2,
+  "next_step": "clarify",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review the supplied function and return a JSON list of findings."
+    },
+    {
+      "id": "correction",
+      "kind": "user_answer",
+      "availability": "supplied",
+      "content": "Correction: return Markdown instead of JSON.",
+      "applies_to": ["json-output", "markdown-output"]
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review the supplied function.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "json-output",
+      "kind": "output",
+      "text": "Return a JSON list of findings.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "rejected",
+        "source_id": "correction"
+      }
+    },
+    {
+      "id": "markdown-output",
+      "kind": "output",
+      "text": "Return a Markdown list of findings.",
+      "origin": "user_stated",
+      "source_ids": ["correction"],
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [],
+  "conflicts": []
+}

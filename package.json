@@ -1,0 +1,41 @@
+{
+  "name": "intentacle",
+  "version": "0.1.0-dev.0",
+  "private": true,
+  "description": "Preserve human intent in inspectable task records.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "bin": {
+    "intentacle": "dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./schema": "./schema/task.schema.json"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "schema",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "fixtures": "npm run build && node scripts/check-fixtures.mjs",
+    "check": "npm run format:check && npm run typecheck && npm test && node scripts/check-fixtures.mjs"
+  },
+  "dependencies": {
+    "ajv": "8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "prettier": "3.6.2",
+    "typescript": "7.0.2"
+  }
+}

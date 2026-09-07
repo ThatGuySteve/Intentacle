@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "unavailable-reference",
+  "revision": 1,
+  "next_step": "inspect",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review the repository at the supplied locator."
+    },
+    {
+      "id": "repo-locator",
+      "kind": "document",
+      "availability": "unavailable",
+      "locator": "https://example.invalid/example/app"
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review the repository at the supplied locator.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "repo-content",
+      "question": "Can the repository content be supplied or inspected?",
+      "necessity": "required",
+      "blocks": ["inspect", "plan", "execute"],
+      "next_action": "inspect_source",
+      "status": "open"
+    }
+  ],
+  "conflicts": []
+}

@@ -1,0 +1,48 @@
+name: Behavior or intent-loss report
+description:
+  Report a bug, lost requirement, unsupported assumption, or unnecessary
+  blocker.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value:
+        "Use sanitized examples only. For security concerns, read SECURITY.md
+        before posting; issues are public."
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit and environment
+      placeholder: "Commit SHA, Node version, operating system"
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: Raw request and relevant context
+      description: Include only information that was available to the tool.
+    validations:
+      required: true
+  - type: textarea
+    id: record
+    attributes:
+      label: Sanitized record and command
+      description:
+        Include the smallest input and command that reproduce the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: difference
+    attributes:
+      label: Expected and observed behavior
+      description:
+        What was lost, wrongly added, incorrectly accepted, or unnecessarily
+        blocked?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Output or diagnostic
+      description: Include a small sanitized excerpt and exit code, if relevant.

@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "conflicting-constraints",
+  "revision": 1,
+  "next_step": "plan",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Upgrade the framework, but do not change any dependencies."
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Upgrade the framework, but do not change any dependencies.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "upgrade",
+      "kind": "constraint",
+      "text": "Upgrade the framework.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      },
+      "strength": "hard"
+    },
+    {
+      "id": "no-deps",
+      "kind": "constraint",
+      "text": "Do not change any dependencies.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      },
+      "strength": "hard"
+    }
+  ],
+  "unknowns": [],
+  "conflicts": [
+    {
+      "id": "dependency-conflict",
+      "item_ids": ["upgrade", "no-deps"],
+      "description": "The requested framework upgrade may require changing a dependency.",
+      "blocks": ["plan", "execute"],
+      "status": "open"
+    }
+  ]
+}

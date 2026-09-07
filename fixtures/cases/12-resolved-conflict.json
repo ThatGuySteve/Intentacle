@@ -1,0 +1,70 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "resolved-conflict",
+  "revision": 2,
+  "next_step": "plan",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Keep every dependency at its current version, and update the parser dependency."
+    },
+    {
+      "id": "tradeoff",
+      "kind": "user_answer",
+      "availability": "supplied",
+      "content": "Allow the parser update; the blanket pin requirement is withdrawn.",
+      "applies_to": ["pins", "pin-conflict"]
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Update the parser dependency.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "pins",
+      "kind": "constraint",
+      "text": "Keep every dependency at its current version.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "rejected",
+        "source_id": "tradeoff"
+      },
+      "strength": "hard"
+    },
+    {
+      "id": "parser-update",
+      "kind": "constraint",
+      "text": "Update the parser dependency.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      },
+      "strength": "hard"
+    }
+  ],
+  "unknowns": [],
+  "conflicts": [
+    {
+      "id": "pin-conflict",
+      "item_ids": ["pins", "parser-update"],
+      "description": "Updating the parser conflicts with preserving every pin.",
+      "blocks": ["plan", "execute"],
+      "status": "resolved",
+      "resolution": {
+        "note": "The user withdrew the blanket pin requirement for this task.",
+        "source_id": "tradeoff"
+      }
+    }
+  ]
+}

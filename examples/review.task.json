@@ -1,0 +1,73 @@
+{
+  "schema_version": "0.1.0-draft",
+  "task_id": "review",
+  "revision": 2,
+  "next_step": "inspect",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Review my app for broken behavior. Identify reproducible problems; do not change any files."
+    },
+    {
+      "id": "format-answer",
+      "kind": "user_answer",
+      "availability": "supplied",
+      "content": "Use your judgment to choose the output format.",
+      "applies_to": ["findings-list"]
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Review my app for broken behavior.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "review-only",
+      "kind": "constraint",
+      "text": "Do not change any files.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "strength": "hard",
+      "review": { "state": "unreviewed" }
+    },
+    {
+      "id": "reproducible-findings",
+      "kind": "success_criterion",
+      "text": "Identify reproducible problems.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": { "state": "unreviewed" }
+    },
+    {
+      "id": "findings-list",
+      "kind": "output",
+      "text": "Present a prioritized findings list.",
+      "origin": "inferred",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "delegated",
+        "source_id": "format-answer"
+      },
+      "rationale": "A prioritized list may make fixes easier to act on."
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "app-location",
+      "question": "Which app should be reviewed?",
+      "necessity": "required",
+      "blocks": ["inspect", "execute"],
+      "next_action": "ask_user",
+      "status": "open"
+    }
+  ],
+  "conflicts": []
+}
