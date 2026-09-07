@@ -55,6 +55,7 @@ test("packed install exposes a working CLI, library, declarations, and schema", 
       "dist/index.d.ts",
       "dist/cli.js",
       "schema/task.schema.json",
+      "LICENSE",
     ])
       assert.ok(paths.has(file), `${file} must be packaged`);
     // npm ci caches tarballs but need not cache registry metadata. Build a
@@ -107,6 +108,14 @@ test("packed install exposes a working CLI, library, declarations, and schema", 
       "--no-audit",
       "--no-fund",
     ]);
+    const installedPackage = JSON.parse(
+      readFileSync(join(folder, "node_modules/intentacle/package.json")),
+    );
+    assert.equal(installedPackage.license, "Apache-2.0");
+    assert.equal(
+      readFileSync(join(folder, "node_modules/intentacle/LICENSE"), "utf8"),
+      readFileSync(join(root, "LICENSE"), "utf8"),
+    );
     const cli = join(folder, "node_modules/intentacle/dist/cli.js");
     assert.match(run([cli, "--version"]), /0\.1\.0-dev\.0/);
     const literal = JSON.parse(

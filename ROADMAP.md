@@ -41,8 +41,8 @@ before collecting scored results.
 
 Complete when the prototype can turn a rough software request into a reviewable
 record, preserve unanswered questions, and produce reproducible comparison
-artifacts. Choose a license before inviting code contributions or releasing a
-package; Apache-2.0 is the current proposal, not an applied license.
+artifacts. The project license is Apache-2.0. Package publication remains
+disabled until the first intentional alpha release.
 
 ## Public alpha, only if evidence supports it
 

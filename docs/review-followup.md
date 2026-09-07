@@ -7,7 +7,7 @@ do not establish that the core behavior is free of other defects.
 
 | Issue                                                                               | Assessment and response                                                                                                                                                                                     |
 | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [#2 License](https://github.com/ThatGuySteve/Intentacle/issues/2)                   | Valid known owner decision. An exact [Apache-2.0 patch](license-proposal.md) is prepared for review; it has not been applied                                                                                |
+| [#2 License](https://github.com/ThatGuySteve/Intentacle/issues/2)                   | Applied [Apache-2.0](licensing.md) on 2026-09-07 after maintainer authorization; added full terms, package metadata, contribution guidance, and packaging coverage                                          |
 | [#3 Duplicate examples](https://github.com/ThatGuySteve/Intentacle/issues/3)        | Replaced duplicates with distinct blocked-app and supplied-function walkthroughs, matching task IDs, and CLI coverage                                                                                       |
 | [#4 Mascot package size](https://github.com/ThatGuySteve/Intentacle/issues/4)       | Excluded artwork from the package and added a 128 KiB tarball budget. Kept the approved original in Git; historical clone size is unchanged                                                                 |
 | [#5 Markdown escaping](https://github.com/ThatGuySteve/Intentacle/issues/5)         | Accepted the readability improvement. Renderer 0.1.1 preserves ordinary punctuation while quoting each source line and escaping markup/HTML; added adversarial coverage                                     |
@@ -17,7 +17,6 @@ do not establish that the core behavior is free of other defects.
 | [#9 Defensibility](https://github.com/ThatGuySteve/Intentacle/issues/9)             | Published the survival hypothesis, strongest counterargument, hostile hypotheses, and observations that would support simplifying or contributing upstream                                                  |
 | [#10 Decision thresholds](https://github.com/ThatGuySteve/Intentacle/issues/10)     | Declared protocol-v1 sample sizes, quality/effort/safety/cost thresholds, and distinct simplify/pause/stop decisions before extraction or results                                                           |
 
-The review changes stay in the existing foundation PR. Issues addressed by that
-PR should close when it merges; the license decision remains separate. No model
-evaluations, participant sessions, competitor product tests, or package release
-have been performed as part of this follow-up.
+All nine issues are addressed in the existing foundation PR and should close
+when it merges. No model evaluations, participant sessions, competitor product
+tests, or package release have been performed as part of this follow-up.

@@ -144,8 +144,7 @@ Read [the security boundary and reporting process](SECURITY.md) before building
 on the record. Community participation follows the
 [code of conduct](CODE_OF_CONDUCT.md).
 
-The planned project is open source; the maintainer's license selection is still
-pending. Package publication is disabled while that decision and the first alpha
-scope remain open. [Contributing](CONTRIBUTING.md) describes the current review
-process. The mascot is an AI-generated raster concept; it is not yet a vector
-identity kit.
+Intentacle is licensed under [Apache-2.0](LICENSE). Package publication remains
+disabled until an intentional alpha release. [Contributing](CONTRIBUTING.md)
+describes the contribution terms and review process. The mascot is an
+AI-generated raster concept; it is not yet a vector identity kit.

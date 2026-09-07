@@ -1,8 +1,9 @@
 # Contributing
 
-Intentacle is an early public prototype. The maintainer is still choosing a
-license. For now, use issues for feedback and design discussion; code
-contributions and package publication should follow that decision.
+Intentacle is an early public prototype licensed under [Apache-2.0](LICENSE).
+Original contributions intentionally submitted for inclusion are accepted under
+those terms unless explicitly stated otherwise. Submit only material you have
+the right to contribute, and preserve third-party notices.
 
 Read the [code of conduct](CODE_OF_CONDUCT.md) and
 [security reporting guidance](SECURITY.md). Issue forms cover behavior/intent

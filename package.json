@@ -4,7 +4,7 @@
   "private": true,
   "description": "Preserve human intent in inspectable task records.",
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "engines": {
     "node": ">=24"
   },
