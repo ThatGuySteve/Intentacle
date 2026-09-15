@@ -1,0 +1,4 @@
+{
+  "id": "conflict",
+  "request": "Remove all dependencies. Keep using the existing Stripe SDK."
+}

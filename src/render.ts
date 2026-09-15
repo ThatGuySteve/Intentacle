@@ -39,6 +39,8 @@ export function renderTask(input: unknown): RenderResult {
         `Origin: ${item.origin} | Review: ${item.review.state} | Use: ${disposition(item)} | Sources: ${item.source_ids.join(", ")}`,
         quote(item.text),
       );
+      if (item.confidence !== undefined)
+        lines.push(`Confidence (uncalibrated): ${item.confidence}`);
       if (item.rationale) lines.push("Rationale:", quote(item.rationale));
       if (item.review.source_id)
         lines.push(`Decision source: ${item.review.source_id}`);
@@ -75,6 +77,9 @@ export function renderTask(input: unknown): RenderResult {
       quote(unknown.question),
       `Affected steps: ${unknown.blocks.join(", ") || "none"} | Next action: ${unknown.next_action}`,
     );
+    if (unknown.effect) lines.push("Effect:", quote(unknown.effect));
+    if (unknown.choices?.length)
+      lines.push("Suggested choices:", ...unknown.choices.map(quote));
     if (unknown.resolution)
       lines.push(
         "Recorded resolution:",

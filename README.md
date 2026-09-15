@@ -10,10 +10,11 @@ Intentacle preserves human intent in an explicit, inspectable task record. The
 record distinguishes what someone requested, what a source reports, what was
 assumed, and what is still unknown. Markdown instructions are a derived export.
 
-**Status: experimental foundation.** The local CLI and library validate,
-inspect, review, and render manually prepared records. `init` copies a request
-literally. AI extraction, guided clarification, and model-specific adapters are
-future work. There are no measured claims of better model outcomes yet.
+**Status: experimental V0.** A local-first compiler turns rough software
+requests into inspectable task records and compiles them for `generic` or
+`codex` targets. Offline parsing is deliberately conservative; optional semantic
+extraction uses an explicitly configured chat-completions endpoint, including
+local models. No measured model-outcome improvement is claimed.
 
 ## Why this exists
 
@@ -26,7 +27,7 @@ The first use case is a bounded software review or change request passed between
 people and AI assistants. The project is an experiment in whether keeping an
 editable record improves that handoff enough to justify the extra step.
 
-## Try the foundation
+## Try V0
 
 Requires Node.js 24 or newer and npm. Initial dependency installation needs
 network access; the commands below subsequently run offline without an account
@@ -42,6 +43,48 @@ node dist/cli.js validate examples/review.task.json
 node dist/cli.js inspect examples/review.task.json --step inspect
 node dist/cli.js render examples/review.task.json
 ```
+
+The smallest new path works without a model or account:
+
+```sh
+mkdir local
+node dist/cli.js parse "Add subscriptions." --id subscriptions --out local/task.json
+node dist/cli.js validate local/task.json
+node dist/cli.js inspect local/task.json --step execute --full
+node dist/cli.js clarify local/task.json --step execute
+node dist/cli.js compile local/task.json --target generic --out local/generic.md
+node dist/cli.js compile local/task.json --target codex --json --out local/codex.json
+```
+
+`task.json` is the source of truth. Both exports retain unknowns and the same
+contract hash. The offline demo does **not** infer Stripe, prices, billing
+intervals, or customer policies. Its output default remains an unreviewed
+proposal. Other requests get a literal scaffold and general scope questions; use
+a model for semantic extraction. See the complete
+[V0 walkthrough and design decisions](docs/v0.md).
+
+To apply a batch of actual user answers, copy and edit
+`examples/subscriptions.answers.json`, then run:
+
+```sh
+node dist/cli.js clarify local/task.json --answers examples/subscriptions.answers.json --out local/task-v2.json
+```
+
+The example is demonstration input, not your billing decision. `action: "defer"`
+records “I don't know” or “use best judgment” without resolving the unknown.
+Compilation produces a handoff even with gaps; `--require-ready` refuses when
+the recorded next step is blocked. It does not execute the handoff.
+
+For semantic extraction, supply the exact endpoint and a model you have
+installed or have chosen to pay for:
+
+```sh
+node dist/cli.js parse "Add subscriptions." --provider chat --endpoint http://127.0.0.1:1234/v1/chat/completions --model YOUR_LOCAL_MODEL --out local/semantic.json
+```
+
+That URL is an example, not an automatically started server. The request goes to
+the configured service. Optional credentials come from `INTENTACLE_API_KEY`;
+Intentacle does not persist them. No calls occur by default.
 
 The review example is valid and its next step, `inspect`, is blocked: the app
 has not been supplied. Formatting was delegated; that does not answer which app
@@ -64,7 +107,6 @@ node dist/cli.js render examples/constraints.task.json --require-ready
 Create a literal draft and record a decision in separate files:
 
 ```sh
-mkdir local
 node dist/cli.js init "Review my app and tell me what needs fixing." --id my-review --out local/task.json
 node dist/cli.js decide examples/review.task.json findings-list confirm --reason "Use the prioritized findings list." --out local/review-v3.json
 node dist/cli.js render local/review-v3.json --json --out local/export.json
@@ -77,15 +119,19 @@ ignored by Git. Optional: `npm link` makes the same CLI available as
 
 ## What works today
 
-| Command                                                                | Behavior                                                             |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `init "request"`                                                       | Preserve the request literally in a draft record                     |
-| `validate task.json`                                                   | Check JSON Schema and provenance/reference consistency               |
-| `inspect task.json --step plan`                                        | Report recorded blockers for a particular step                       |
-| `decide task.json item-id confirm\|delegate\|reject --reason "answer"` | Record one scoped user decision and increment the revision           |
-| `render task.json`                                                     | Produce deterministic Markdown with origins and unresolved questions |
-| `render task.json --json`                                              | Include the export coverage manifest                                 |
-| `render task.json --require-ready`                                     | Refuse export when the record's next step has a known blocker        |
+| Command                                                                | Behavior                                                                         |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `parse "request"`                                                      | Conservative offline extraction; `--provider chat` opts into semantic extraction |
+| `clarify task.json --step execute`                                     | Batch at most three consequential questions, retaining remaining gaps            |
+| `clarify task.json --answers answers.json`                             | Record literal scoped answers or deferrals in a new revision                     |
+| `compile task.json --target generic\|codex --json`                     | Target instructions and a contract hash/coverage manifest                        |
+| `init "request"`                                                       | Preserve the request literally in a draft record                                 |
+| `validate task.json`                                                   | Check JSON Schema and provenance/reference consistency                           |
+| `inspect task.json --step plan`                                        | Report recorded blockers for a particular step                                   |
+| `decide task.json item-id confirm\|delegate\|reject --reason "answer"` | Record one scoped user decision and increment the revision                       |
+| `render task.json`                                                     | Produce deterministic Markdown with origins and unresolved questions             |
+| `render task.json --json`                                              | Include the export coverage manifest                                             |
+| `render task.json --require-ready`                                     | Refuse export when the record's next step has a known blocker                    |
 
 File commands also accept `-` for JSON on stdin. Run `node dist/cli.js --help`
 for arguments and exit codes. File/stdin input is limited to 1 MiB.
@@ -133,9 +179,11 @@ twelve original [development fixtures](fixtures/README.md). CI uses one Node job
 with no model calls. A packaging smoke test also verifies that the installed CLI
 and library can find the bundled schema.
 
-The next milestone is a bounded extraction and clarification prototype, assessed
-against ordinary conversation, a guided worksheet, and a relevant existing tool.
-See the [landscape](docs/landscape.md),
+The next milestone is a small real-model calibration run, including actual
+Prompt Master output, before a frozen decision cohort. The
+[benchmark harness](benchmark/README.md) prepares four arms and can explicitly
+run one downstream model/configuration; missing arms stay missing. See the
+[landscape](docs/landscape.md),
 [defensibility assessment](docs/defensibility.md), [roadmap](ROADMAP.md), and
 [evaluation gates](docs/evaluation.md). Public fixtures are development data,
 not a held-out benchmark.

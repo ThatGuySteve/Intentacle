@@ -1,5 +1,5 @@
-export const SCHEMA_VERSION = "0.1.0-draft" as const;
-export const RENDERER_VERSION = "markdown/0.1.1" as const;
+export const SCHEMA_VERSION = "0.1.1-draft" as const;
+export const RENDERER_VERSION = "markdown/0.2.0" as const;
 
 export type Step = "clarify" | "inspect" | "plan" | "execute";
 export type Origin = "user_stated" | "source_reported" | "inferred" | "default";
@@ -27,6 +27,8 @@ export interface Item {
   origin: Origin;
   source_ids: string[];
   rationale?: string;
+  /** Uncalibrated extractor estimate; never changes authority. */
+  confidence?: number;
   strength?: "hard" | "preference";
   review: { state: ReviewState; source_id?: string };
 }
@@ -34,6 +36,8 @@ export interface Item {
 export interface Unknown {
   id: string;
   question: string;
+  effect?: string;
+  choices?: string[];
   necessity: "required" | "important" | "optional";
   blocks: Step[];
   next_action: "ask_user" | "inspect_source" | "offer_choices";

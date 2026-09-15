@@ -250,7 +250,7 @@ test("ordinary punctuation stays readable while every source line stays quoted",
     quoted,
     /<\/blockquote>|\[click\]\(javascript:|^# Forged/m,
   );
-  assert.equal(output.manifest.renderer_version, "markdown/0.1.1");
+  assert.equal(output.manifest.renderer_version, "markdown/0.2.0");
 });
 
 test("hard constraints, preferences, and recorded blocks survive export", () => {
