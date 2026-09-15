@@ -1,0 +1,36 @@
+{
+  "id": "subscriptions",
+  "user_answer_ledger": {
+    "provider": "Stripe",
+    "intervals": "Monthly and annual",
+    "existing_users": "Keep existing free users",
+    "cancellation": "At period end",
+    "failed_payments": "Notify and provide a grace period",
+    "mobile": "Support existing mobile checkout",
+    "architecture": "Preserve the existing application"
+  },
+  "important_ambiguities": [
+    "Project source",
+    "Provider and plan policy",
+    "Cancellation and failed-payment entitlements"
+  ],
+  "unsupported_assumptions_to_avoid": [
+    "Assume Stripe is already installed",
+    "Charge existing users",
+    "Invent prices"
+  ],
+  "expected_intent_elements": [
+    "Literal subscriptions objective",
+    "Provider remains unknown until evidence or answer",
+    "No claimed implementation success"
+  ],
+  "scoring": {
+    "task_success": null,
+    "hidden_requirement_coverage": null,
+    "unsupported_commitments": null,
+    "constraint_violations": null,
+    "correctness": null,
+    "completeness": null
+  },
+  "note": "Public development data, not held-out evidence. Hidden answers are not requirements an extractor may guess. Score authorized requirement use separately from lucky guessing."
+}

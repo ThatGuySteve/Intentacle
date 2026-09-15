@@ -4,7 +4,7 @@ The first question is whether explicit intent records improve real handoffs
 enough to justify their cost in user effort. The schema and CLI exist to test
 that claim.
 
-## Foundation — this change
+## Foundation — retained
 
 - Experimental record schema, provenance checks, and scoped review decisions.
 - Offline CLI/library, deterministic Markdown export, and coverage manifest.
@@ -15,34 +15,35 @@ Complete when a fresh checkout can install, validate the examples, apply a
 review decision without changing origin, and render a faithful handoff with all
 recorded blockers visible.
 
-## Next: extraction and clarification experiment
+## V0 implementation — current
 
-The [landscape](docs/landscape.md) and
-[defensibility assessment](docs/defensibility.md) bound this experiment. Before
-choosing an extraction architecture, inspect the closest existing tools with the
-six provenance probes in the landscape. Prefer a small upstream extension if it
-meets the need. Freeze the evaluation protocol, rubrics, and untouched cases
-before collecting scored results.
+The original record and review semantics are retained. V0 adds confidence and
+unknown effects/choices, conservative offline parsing, an optional configurable
+chat-completions extractor, bounded structured clarification, and generic/Codex
+compilation. Invalid model output fails without hidden repairs. The adapter
+boundary is two strings around the same complete provenance-preserving export.
 
-1. Define a small inference interface that returns proposed records and
-   candidate questions. The caller supplies endpoint configuration; credentials
-   stay outside records and exports.
-2. Add one tested provider integration and a fake provider for deterministic
-   tests. Do not assume that every “compatible” endpoint supports structured
-   output.
-3. Preserve the raw request on failure. Reject invalid extraction output; permit
-   at most one bounded repair attempt before returning an explicit error.
-4. Add a terminal review loop for a few scoped choices, free-text alternatives,
-   and “I don't know.” Resolve material gaps from supplied evidence where
-   possible.
-5. Run the comparison in [the evaluation protocol](docs/evaluation.md),
-   reporting unsupported assumptions, user effort, outcome quality, latency, and
-   total cost.
+The benchmark has eight public development cases, separate evaluator ledgers,
+four-arm preparation, and an opt-in downstream runner. No real-model extraction,
+Prompt Master comparison, human pilot, or outcome study has been completed.
 
-Complete when the prototype can turn a rough software request into a reviewable
-record, preserve unanswered questions, and produce reproducible comparison
-artifacts. The project license is Apache-2.0. Package publication remains
-disabled until the first intentional alpha release.
+## Next: calibration before expansion
+
+1. Run semantic extraction on a chosen local model and inspect missing
+   constraints, misleading explicit spans, confidence, and classification
+   errors.
+2. Pin Prompt Master and produce real baseline transcripts, using the same
+   answer oracle. Record upstream tokens, time, decisions, failures, and cost
+   for all arms.
+3. Use the public development cases to debug the harness; they cannot satisfy
+   the predeclared gates. Freeze new cases and rubrics before scored
+   comparisons.
+4. Test whether the record helps a real edit/target-transfer task. Retain fewer
+   fields or stop if it adds friction without improving outcomes or handoffs.
+
+See [the V0 decisions](docs/v0.md), [benchmark usage](benchmark/README.md), and
+[evaluation protocol](docs/evaluation.md). No model server or package is
+shipped.
 
 ## Public alpha, only if evidence supports it
 

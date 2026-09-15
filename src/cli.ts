@@ -3,20 +3,31 @@ import { open, readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
 import {
   createTask,
+  parseTask,
+  extractOffline,
+  extractTask,
+  createChatProvider,
+  planClarification,
+  answerUnknowns,
+  compileTask,
   decideTask,
   inspectTask,
   renderTask,
   validateTask,
 } from "./index.js";
+import type { Target, ClarificationAnswer } from "./index.js";
 import type { ReviewState, Step } from "./types.js";
 
 const LIMIT = 1024 * 1024;
-const HELP = `Intentacle — offline task records (experimental)
+const HELP = `Intentacle — local-first intent compiler V0 (experimental)
 
 Usage:
+  intentacle parse "request" [--provider offline|chat] [--endpoint URL --model NAME] [--id task-id] [--out task.json]
+  intentacle clarify task.json [--step inspect|plan|execute] [--answers answers.json] [--out next.json]
+  intentacle compile task.json [--target generic|codex] [--json] [--require-ready] [--out task.md]
   intentacle init "literal request" [--id task-id] [--out task.json]
   intentacle validate task.json
-  intentacle inspect task.json [--step clarify|inspect|plan|execute]
+  intentacle inspect task.json [--step clarify|inspect|plan|execute] [--full]
   intentacle render task.json [--json] [--require-ready] [--out task.md]
   intentacle decide task.json item-id confirm|delegate|reject --reason "user answer" [--out next.json]
 
@@ -25,7 +36,9 @@ Use - instead of task.json to read JSON from stdin. Output defaults to stdout.
 init copies the request literally; it does not run AI extraction.
 validate checks structure and provenance, not readiness or factual truth.
 Exit codes: 0 success, 2 invalid input/I/O/usage, 3 blocked (--require-ready).
-No command fetches references, calls a model, or executes a task.
+Only parse --provider chat calls a model, at the explicitly configured endpoint.
+Use INTENTACLE_API_KEY for optional credentials. No command executes a task or fetches references.
+Offline parse is a conservative scaffold plus a narrow subscriptions demo, not semantic extraction.
 `;
 
 async function input(path: string): Promise<unknown> {
@@ -76,8 +89,14 @@ async function main(): Promise<void> {
       id: { type: "string" },
       step: { type: "string" },
       json: { type: "boolean" },
+      full: { type: "boolean" },
       "require-ready": { type: "boolean" },
       reason: { type: "string" },
+      provider: { type: "string" },
+      endpoint: { type: "string" },
+      model: { type: "string" },
+      target: { type: "string" },
+      answers: { type: "string" },
     },
   });
   if (values.help) {
@@ -97,8 +116,11 @@ async function main(): Promise<void> {
   const [command, path, item, action] = positionals;
   const allowed: Record<string, string[]> = {
     init: ["id", "out"],
+    parse: ["id", "out", "provider", "endpoint", "model"],
+    clarify: ["step", "answers", "out"],
+    compile: ["target", "json", "require-ready", "out"],
     validate: [],
-    inspect: ["step"],
+    inspect: ["step", "full"],
     render: ["json", "require-ready", "out"],
     decide: ["reason", "out"],
   };
@@ -113,6 +135,60 @@ async function main(): Promise<void> {
   let output: unknown;
   let plain = false;
   switch (command) {
+    case "parse": {
+      const provider = values.provider ?? "offline";
+      if (provider === "offline") {
+        if (values.endpoint || values.model)
+          throw new Error("Use --provider chat for an explicit model call.");
+        output = extractOffline(path, values.id);
+      } else if (provider === "chat") {
+        if (!values.endpoint || !values.model)
+          throw new Error("chat requires --endpoint and --model.");
+        const config = {
+          endpoint: values.endpoint,
+          model: values.model,
+          ...(process.env.INTENTACLE_API_KEY
+            ? { apiKey: process.env.INTENTACLE_API_KEY }
+            : {}),
+        };
+        output = await extractTask(
+          path,
+          createChatProvider(config).extract,
+          values.id,
+        );
+      } else throw new Error("Unknown provider; choose offline or chat.");
+      break;
+    }
+    case "clarify": {
+      if (values.answers && values.step)
+        throw new Error(
+          "--step selects questions; omit it when applying answers.",
+        );
+      const record = await input(path);
+      output = values.answers
+        ? answerUnknowns(
+            record,
+            (await input(values.answers)) as ClarificationAnswer[],
+          )
+        : planClarification(record, values.step as Step | undefined);
+      break;
+    }
+    case "compile": {
+      const result = compileTask(
+        await input(path),
+        (values.target ?? "generic") as Target,
+      );
+      if (values["require-ready"] && result.manifest.readiness.blocked) {
+        process.stderr.write(
+          `Blocked for ${result.manifest.readiness.step}: ${result.manifest.readiness.blockers.map((b) => b.id).join(", ")}\n`,
+        );
+        process.exitCode = 3;
+        return;
+      }
+      output = values.json ? result : result.instruction;
+      plain = !values.json;
+      break;
+    }
     case "init":
       output = createTask(path, values.id);
       break;
@@ -122,9 +198,24 @@ async function main(): Promise<void> {
       if (!result.valid) process.exitCode = 2;
       break;
     }
-    case "inspect":
-      output = inspectTask(await input(path), values.step as Step | undefined);
+    case "inspect": {
+      const record = parseTask(await input(path));
+      const readiness = inspectTask(record, values.step as Step | undefined);
+      output = values.full
+        ? {
+            readiness,
+            record,
+            assumptions: record.items.filter(
+              (i) => i.origin === "inferred" || i.origin === "default",
+            ),
+            clarification: planClarification(
+              record,
+              values.step as Step | undefined,
+            ),
+          }
+        : readiness;
       break;
+    }
     case "render": {
       const result = renderTask(await input(path));
       if (values["require-ready"] && result.manifest.readiness.blocked) {

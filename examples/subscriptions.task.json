@@ -1,0 +1,77 @@
+{
+  "schema_version": "0.1.1-draft",
+  "task_id": "subscriptions",
+  "revision": 1,
+  "next_step": "inspect",
+  "references": [
+    {
+      "id": "request-1",
+      "kind": "user_request",
+      "availability": "supplied",
+      "content": "Add subscriptions."
+    }
+  ],
+  "items": [
+    {
+      "id": "objective-1",
+      "kind": "objective",
+      "text": "Add subscriptions.",
+      "origin": "user_stated",
+      "source_ids": ["request-1"],
+      "review": {
+        "state": "unreviewed"
+      }
+    },
+    {
+      "id": "output-proposal",
+      "kind": "output",
+      "text": "Report findings, proposed changes, and unresolved blockers.",
+      "origin": "default",
+      "source_ids": ["request-1"],
+      "rationale": "A reviewable handoff is the V0 output default, not a user requirement.",
+      "confidence": 0.5,
+      "review": {
+        "state": "unreviewed"
+      }
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "project-evidence",
+      "question": "Which project or supplied source should be inspected?",
+      "effect": "Concrete inspection and implementation need access to the intended project.",
+      "necessity": "required",
+      "blocks": ["inspect", "execute"],
+      "next_action": "ask_user",
+      "status": "open",
+      "choices": ["Provide a local repository path", "Provide source excerpts"]
+    },
+    {
+      "id": "subscription-policy",
+      "question": "What billing provider, plan intervals, and existing-user policy are intended?",
+      "effect": "These decisions change billing integration and access behavior; guessing can charge or remove access incorrectly.",
+      "necessity": "required",
+      "blocks": ["execute"],
+      "next_action": "offer_choices",
+      "status": "open",
+      "choices": [
+        "Inspect existing billing configuration first",
+        "I will specify provider, intervals, and existing-user treatment"
+      ]
+    },
+    {
+      "id": "billing-lifecycle",
+      "question": "How should cancellation and failed payments affect access?",
+      "effect": "Changes customer entitlements and recovery behavior.",
+      "necessity": "important",
+      "blocks": [],
+      "next_action": "offer_choices",
+      "status": "open",
+      "choices": [
+        "Cancel at period end; specify a payment grace period",
+        "Follow existing documented policy"
+      ]
+    }
+  ],
+  "conflicts": []
+}

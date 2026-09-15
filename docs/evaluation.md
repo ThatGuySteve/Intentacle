@@ -1,8 +1,14 @@
 # Evaluation protocol: proposal, not results
 
 The twelve repository fixtures test deterministic record behavior. They do not
-show that Intentacle improves a model's work. No model evaluation runner or paid
-evaluation is included in this foundation.
+show that Intentacle improves a model's work. The V0 now includes a separate
+[development runner](../benchmark/README.md), but no model outcomes or paid
+evaluation have been collected. Its four arms are raw control, actual Prompt
+Master output, Intentacle Quick, and Intentacle Guided. This development harness
+does not amend the predeclared decision gates below. Before a scored study,
+freeze a new protocol version if changing its arm definitions. Prompt Master is
+the primary existing-tool baseline selected for this V0, with its commit and
+allowed configuration still to be frozen before real comparison.
 
 ## Comparisons
 

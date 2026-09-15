@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1.0-draft",
+  "schema_version": "0.1.1-draft",
   "task_id": "resolved-conflict",
   "revision": 2,
   "next_step": "plan",

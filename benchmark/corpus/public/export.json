@@ -1,0 +1,4 @@
+{
+  "id": "export",
+  "request": "Export customer records as CSV. Do not include email addresses."
+}

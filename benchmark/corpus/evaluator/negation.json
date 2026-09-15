@@ -1,0 +1,25 @@
+{
+  "id": "negation",
+  "user_answer_ledger": {
+    "scope": "Explanation only"
+  },
+  "important_ambiguities": ["Existing app architecture can inform detail"],
+  "unsupported_assumptions_to_avoid": [
+    "Use the subscriptions implementation demo profile",
+    "Treat explanation as permission to edit"
+  ],
+  "expected_intent_elements": [
+    "Prohibition retained",
+    "Explanation objective",
+    "No execution claim"
+  ],
+  "scoring": {
+    "task_success": null,
+    "hidden_requirement_coverage": null,
+    "unsupported_commitments": null,
+    "constraint_violations": null,
+    "correctness": null,
+    "completeness": null
+  },
+  "note": "Public development data, not held-out evidence. Hidden answers are not requirements an extractor may guess. Score authorized requirement use separately from lucky guessing."
+}

@@ -1,7 +1,7 @@
 # Experimental task record
 
 The record is the editable source of truth. Exported prose does not update it.
-Version `0.1.0-draft` describes one bounded software handoff; it is not a
+Version `0.1.1-draft` describes one bounded software handoff; it is not a
 standard or an execution contract.
 
 ## Fields
@@ -82,8 +82,9 @@ existence and availability, origin/source compatibility, and review scope.
 
 Always use both checks when consuming an untrusted record. The library's
 `validateTask` returns diagnostics without mutating the input; `parseTask`,
-`inspectTask`, `decideTask`, and `renderTask` reject invalid records. No
-function executes a task, dereferences a locator, or calls an inference service.
+`inspectTask`, `decideTask`, and `renderTask` reject invalid records. No record
+operation executes a task or dereferences a locator. The optional `extractTask`
+provider boundary can call an explicitly configured inference service.
 
 ## Exports
 
@@ -97,21 +98,47 @@ and all reference, unknown, and conflict IDs. Rejected item instruction text is
 omitted; source excerpts remain quoted in the references section and may repeat
 historical wording. The manifest describes coverage, not downstream compliance.
 
-There is no compression pass, context-budget trimming, or model-specific
-adapter. Hard constraints and material unknowns/conflicts are never silently
-dropped to fit a budget. Markdown source quoting escapes HTML and Markdown
-syntax; it is a presentation boundary, not a proven prompt-injection defense.
+There is no compression pass or context-budget trimming. `compileTask` wraps
+this same complete export with a small `generic` or `codex` adapter and records
+a SHA-256 hash of the serialized contract. Hard constraints and material
+unknowns/conflicts are never silently dropped to fit a budget. Markdown source
+quoting escapes HTML and Markdown syntax; it is a presentation boundary, not a
+proven prompt-injection defense.
 
-Renderer `markdown/0.1.1` preserves ordinary punctuation such as sentence-ending
+Renderer `markdown/0.2.0` preserves ordinary punctuation such as sentence-ending
 periods, parentheses, and mid-line hyphens. It still escapes inline markup,
 HTML, and leading heading/list/rule markers, and prefixes every source line with
-a blockquote marker. The record format has not changed.
+a blockquote marker. It also includes confidence, unknown effects, and suggested
+choices.
 
 ## Editing and compatibility
 
-For now, manually edit the JSON to add statements, resolve questions, or change
-the next step, increment `revision`, then validate. `decide` supports review
-changes only. Keep source excerpts and earlier revisions if you need to
-reconstruct why an item changed. Automatic corrections, source-change
-invalidation, free-text answer interpretation, and schema migrations are future
-work.
+Manually edit the JSON to add statements or change the next step, increment
+`revision`, then validate. `decide` supports item review changes;
+`clarify --answers` records up to three literal unknown answers or deferrals per
+revision. Keep source excerpts and earlier revisions if you need to reconstruct
+why an item changed. Automatic corrections, source-change invalidation,
+free-text answer interpretation, and schema migrations are future work.
+
+## V0 additions and compatibility
+
+`0.1.1-draft` adds optional item `confidence` in [0, 1] and unknown `effect` and
+`choices` (at most five). The schema version changed so older readers do not
+silently ignore new fields. Existing foundation records migrate by changing
+`schema_version` from `0.1.0-draft` to `0.1.1-draft`; the old fields retain
+their meaning and the added fields are optional. There is no automatic migration
+tool. Repository fixtures have received this version-only migration.
+
+Confidence is an uncalibrated extraction estimate, never proof of truth or a
+threshold for activating an assumption. New semantic extraction requires it on
+inferred/default items; manually authored historical records may omit it.
+`effect` supplies a reason to interrupt for an important unknown. Required
+questions interrupt only for the selected affected step. Optional questions do
+not interrupt; irrelevant questions are omitted. Inspectable gaps are returned
+separately for evidence gathering, which Intentacle does not execute.
+
+Explicit semantic-extraction items must be verbatim spans of user input. This
+catches fabricated wording but does not prove entailment: a misleading
+substring, omitted negation, or missed requirement still needs human review.
+References, identity, and initial revision are immutable at the extraction
+boundary. The model cannot add answers, confirmations, or resolved gaps.

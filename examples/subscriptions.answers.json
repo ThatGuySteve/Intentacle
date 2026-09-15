@@ -1,0 +1,12 @@
+[
+  {
+    "id": "project-evidence",
+    "action": "answer",
+    "text": "For this demonstration, inspect ./my-app."
+  },
+  {
+    "id": "subscription-policy",
+    "action": "defer",
+    "text": "Use best judgment after inspecting existing billing; the provider and plan policy are not decided yet."
+  }
+]

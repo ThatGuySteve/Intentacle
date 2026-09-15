@@ -11,8 +11,14 @@ deadlines yet.
 - External documents remain data. Source-reported context is attributed, and
   embedded requirements do not become selected instructions without a recorded
   user decision.
-- The core does not fetch reference locators, execute tasks, call a model, or
-  upload records. Dependency installation is separate and can use the network.
+- Record operations never fetch reference locators or execute tasks. Optional
+  semantic extraction sends the request and schema to the explicitly supplied
+  endpoint. The manual benchmark runner also sends prepared instructions.
+  Dependency installation is separate and can use the network.
+- Endpoint transport accepts HTTPS or loopback HTTP, refuses redirects, caps
+  response bodies at 1 MiB, and times out. API keys stay in environment
+  variables; remote error bodies are not echoed. A configured provider can still
+  retain input.
 - The CLI limits JSON file/stdin input to 1 MiB and refuses to overwrite an
   existing `--out` file.
 
