@@ -92,6 +92,15 @@ test("extractor rejects invented authority, sources, resolutions, and paraphrase
   const scaffold = createTask("Add subscriptions.", "semantic");
   const good = semanticCandidate(scaffold);
   assert.equal(acceptExtraction(scaffold, good).items[1].confidence, 0.7);
+  const reordered = structuredClone(good);
+  reordered.references = reordered.references.map((ref) =>
+    Object.fromEntries(Object.entries(ref).reverse()),
+  );
+  assert.equal(
+    acceptExtraction(scaffold, reordered).items[1].origin,
+    "inferred",
+    "JSON object key order is not source provenance",
+  );
   const mutations = [
     (r) => {
       r.references[0].content = "Add subscriptions with Stripe.";
