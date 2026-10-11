@@ -21,7 +21,8 @@ const checks = [
     id: "bounds-and-regressions",
     priority: "medium",
     applies: "always",
-    question: "Which existing behavior and explicit non-goals must remain unchanged?",
+    question:
+      "Which existing behavior and explicit non-goals must remain unchanged?",
     inspect: [
       "current product contract",
       "adjacent flows",
@@ -33,15 +34,18 @@ const checks = [
     id: "interaction-states",
     priority: "high",
     applies: "interactive",
-    question: "What states, transitions, and invalid interactions must the UI support?",
+    question:
+      "What states, transitions, and invalid interactions must the UI support?",
     inspect: ["rendered component", "event handlers", "state-transition tests"],
-    mentions: /state|transition|on.off|place|remove|drag|rotate|stop|start|reset/i,
+    mentions:
+      /state|transition|on.off|place|remove|drag|rotate|stop|start|reset/i,
   },
   {
     id: "interaction-accessibility",
     priority: "high",
     applies: "interactive",
-    question: "Can the interaction be completed with keyboard, touch, and assistive technology?",
+    question:
+      "Can the interaction be completed with keyboard, touch, and assistive technology?",
     inspect: [
       "keyboard operation",
       "focus states",
@@ -54,7 +58,8 @@ const checks = [
     id: "interaction-responsive",
     priority: "medium",
     applies: "interactive",
-    question: "What happens on narrow screens, reduced-motion settings, and interrupted interactions?",
+    question:
+      "What happens on narrow screens, reduced-motion settings, and interrupted interactions?",
     inspect: [
       "mobile viewport",
       "reduced-motion behavior",
@@ -66,7 +71,8 @@ const checks = [
     id: "payment-authorization",
     priority: "high",
     applies: "financial",
-    question: "What authorizes each financial action, and which party owns the resulting money or obligation?",
+    question:
+      "What authorizes each financial action, and which party owns the resulting money or obligation?",
     inspect: [
       "payment ownership contract",
       "approval and entitlement rules",
@@ -78,20 +84,23 @@ const checks = [
     id: "payment-reconciliation",
     priority: "high",
     applies: "financial",
-    question: "How are retries, duplicated events, partial completion, refunds, and ledger reconciliation handled?",
+    question:
+      "How are retries, duplicated events, partial completion, refunds, and ledger reconciliation handled?",
     inspect: [
       "webhook handlers",
       "idempotency keys",
       "ledger invariants",
       "test-mode failure scenarios",
     ],
-    mentions: /idempoten|duplicate|refund|reconcil|partial.payment|webhook|retry/i,
+    mentions:
+      /idempoten|duplicate|refund|reconcil|partial.payment|webhook|retry/i,
   },
   {
     id: "external-fetch-security",
     priority: "high",
     applies: "remote-url",
-    question: "How are user-supplied URLs and redirects prevented from reaching private or untrusted destinations?",
+    question:
+      "How are user-supplied URLs and redirects prevented from reaching private or untrusted destinations?",
     inspect: [
       "SSRF policy",
       "redirect validation",
@@ -104,7 +113,8 @@ const checks = [
     id: "external-evidence-scope",
     priority: "high",
     applies: "remote-url",
-    question: "How does the result distinguish inspected facts from unvisited pages, failed fetches, and unknowns?",
+    question:
+      "How does the result distinguish inspected facts from unvisited pages, failed fetches, and unknowns?",
     inspect: [
       "fetch scope",
       "error states",
@@ -116,9 +126,12 @@ const checks = [
 ];
 
 const triggers = {
-  interactive: /interactiv|click|tap|drag|drop|animate|animation|move (?:the |a )?(?:arm|needle|control)|toggle|playback|record player|button/i,
-  financial: /pay(?:ment|able)?|invoice|refund|deposit|milestone|checkout|billing|stripe|charge|bank transfer/i,
-  "remote-url": /(?:website|site|url|domain|webpage)\s+(?:checker|scanner|audit|inspection|analy[sz]er)|(?:check|scan|inspect|audit|fetch|crawl)\s+(?:a |the |any )?(?:site|website|url|domain|webpage)/i,
+  interactive:
+    /interactiv|click|tap|drag|drop|animate|animation|move (?:the |a )?(?:arm|needle|control)|toggle|playback|record player|button/i,
+  financial:
+    /pay(?:ment|able)?|invoice|refund|deposit|milestone|checkout|billing|stripe|charge|bank transfer/i,
+  "remote-url":
+    /(?:website|site|url|domain|webpage)\s+(?:checker|scanner|audit|inspection|analy[sz]er)|(?:check|scan|inspect|audit|fetch|crawl)\s+(?:a |the |any )?(?:site|website|url|domain|webpage)/i,
 };
 
 function active(item) {

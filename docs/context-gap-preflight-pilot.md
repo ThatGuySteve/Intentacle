@@ -4,13 +4,13 @@
 
 Evaluate whether an inexpensive, conservative candidate-question checklist can
 surface useful issues **before** software work starts. This is **not** automatic
-context retrieval, intelligent uncertainty derivation, a new source of truth,
-or a claim that a system is complete. It must not expand a change request or
-block a task on its own.
+context retrieval, intelligent uncertainty derivation, a new source of truth, or
+a claim that a system is complete. It must not expand a change request or block
+a task on its own.
 
-The existing [V0 evaluation gates](evaluation.md) and
-[roadmap](../ROADMAP.md) remain in force. No public CLI contract, task schema,
-model provider, hosting, or paid API call changes in this slice.
+The existing [V0 evaluation gates](evaluation.md) and [roadmap](../ROADMAP.md)
+remain in force. No public CLI contract, task schema, model provider, hosting,
+or paid API call changes in this slice.
 
 ## Run
 
@@ -22,16 +22,16 @@ node experiments/context-preflight/cli.mjs examples/subscriptions.task.json
 npm test
 ```
 
-The CLI reads one **local, valid** Intentacle task record (1 MiB maximum).
-It calls `parseTask` before reporting anything, reads the already-supplied
-record, and emits JSON to stdout. It does not fetch locators, inspect
-repositories, contact models, or modify files or task decisions.
+The CLI reads one **local, valid** Intentacle task record (1 MiB maximum). It
+calls `parseTask` before reporting anything, reads the already-supplied record,
+and emits JSON to stdout. It does not fetch locators, inspect repositories,
+contact models, or modify files or task decisions.
 
 Each `candidate_check` is deliberately labeled
 `candidate_question_not_a_defect`. `request_mentions_topic` reflects lexical
 hints only, **not** verified coverage. Existing recorded unknowns are repeated
-separately, preserving `blocks` and `next_action`. No candidate check
-becomes an unknown or authorization to implement something.
+separately, preserving `blocks` and `next_action`. No candidate check becomes an
+unknown or authorization to implement something.
 
 ## First development cases (known-history; NOT blind evidence)
 
@@ -39,14 +39,14 @@ becomes an unknown or authorization to implement something.
    suggest testing interaction states, input accessibility, and small-screen/
    interrupt cases without assuming which choices the owner wants?
 2. **ProQuote** — _"Automatically invoice an approved job."_ Does it surface
-   authorization and reconciliation/idempotency questions without pretending
-   to verify the payment architecture?
-3. **Webmanship** — _"Add a website checker where visitors provide a URL."_
-   Does it surface SSRF/redirect and evidence-scope questions without making
-   a site-wide defect claim?
+   authorization and reconciliation/idempotency questions without pretending to
+   verify the payment architecture?
+3. **Webmanship** — _"Add a website checker where visitors provide a URL."_ Does
+   it surface SSRF/redirect and evidence-scope questions without making a
+   site-wide defect claim?
 
-These are developer smoke cases selected with knowledge of prior outcomes.
-They are **not** scored as independent prediction successes.
+These are developer smoke cases selected with knowledge of prior outcomes. They
+are **not** scored as independent prediction successes.
 
 ## Next empirical step before integration
 
@@ -55,11 +55,10 @@ request, the existing Intentacle handoff, and the same handoff plus this
 preflight, with **identical inspection permissions, model budgets, and
 answer-oracle access**. Keep the rubric invisible to the acting systems.
 Measure: material missing requirements surfaced, false-positive questions,
-unsupported assumptions, downstream defects, review time, and full cost.
-Retain misses and failures in the denominator. Stop or simplify this
-experiment if added friction exceeds benefit. Do not call this automatic
-discovery until it demonstrates novel relevant questions beyond a static
-checklist.
+unsupported assumptions, downstream defects, review time, and full cost. Retain
+misses and failures in the denominator. Stop or simplify this experiment if
+added friction exceeds benefit. Do not call this automatic discovery until it
+demonstrates novel relevant questions beyond a static checklist.
 
 A genuinely adaptive version would need read-only, scoped evidence retrieval;
 evidence-backed uncertainty derivation; and authorization boundaries. Those are

@@ -39,7 +39,10 @@ test("money and external URL tasks surface different inspections", () => {
 });
 
 test("untrusted document instructions cannot change scope, trigger families, or become requirements", () => {
-  const input = createTask("Make the record player interactive.", "untrusted-test");
+  const input = createTask(
+    "Make the record player interactive.",
+    "untrusted-test",
+  );
   input.references.push({
     id: "document-1",
     kind: "document",
