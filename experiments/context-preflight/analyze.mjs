@@ -8,8 +8,13 @@ const checks = [
     id: "success-evidence",
     priority: "high",
     applies: "always",
-    question: "What observable outcome demonstrates that the requested change works for its intended user?",
-    inspect: ["acceptance criteria", "user journey", "repeatable test or measurement"],
+    question:
+      "What observable outcome demonstrates that the requested change works for its intended user?",
+    inspect: [
+      "acceptance criteria",
+      "user journey",
+      "repeatable test or measurement",
+    ],
     mentions: /acceptance|success criteria|verified|measur|test(?:ed|s|ing)?/i,
   },
   {
@@ -17,7 +22,11 @@ const checks = [
     priority: "medium",
     applies: "always",
     question: "Which existing behavior and explicit non-goals must remain unchanged?",
-    inspect: ["current product contract", "adjacent flows", "existing regression tests"],
+    inspect: [
+      "current product contract",
+      "adjacent flows",
+      "existing regression tests",
+    ],
     mentions: /unchanged|backwards.compatib|regress|non.goals?|out.of.scope/i,
   },
   {
@@ -33,7 +42,12 @@ const checks = [
     priority: "high",
     applies: "interactive",
     question: "Can the interaction be completed with keyboard, touch, and assistive technology?",
-    inspect: ["keyboard operation", "focus states", "accessible controls", "touch interaction"],
+    inspect: [
+      "keyboard operation",
+      "focus states",
+      "accessible controls",
+      "touch interaction",
+    ],
     mentions: /keyboard|screen.reader|accessib|touch|focus|aria/i,
   },
   {
@@ -41,7 +55,11 @@ const checks = [
     priority: "medium",
     applies: "interactive",
     question: "What happens on narrow screens, reduced-motion settings, and interrupted interactions?",
-    inspect: ["mobile viewport", "reduced-motion behavior", "interruption recovery"],
+    inspect: [
+      "mobile viewport",
+      "reduced-motion behavior",
+      "interruption recovery",
+    ],
     mentions: /mobile|tablet|responsiv|reduced.motion|interrupt|small.screen/i,
   },
   {
@@ -49,7 +67,11 @@ const checks = [
     priority: "high",
     applies: "financial",
     question: "What authorizes each financial action, and which party owns the resulting money or obligation?",
-    inspect: ["payment ownership contract", "approval and entitlement rules", "backend authorization"],
+    inspect: [
+      "payment ownership contract",
+      "approval and entitlement rules",
+      "backend authorization",
+    ],
     mentions: /authoriz|consent|approv|direct.charge|ownership/i,
   },
   {
@@ -57,7 +79,12 @@ const checks = [
     priority: "high",
     applies: "financial",
     question: "How are retries, duplicated events, partial completion, refunds, and ledger reconciliation handled?",
-    inspect: ["webhook handlers", "idempotency keys", "ledger invariants", "test-mode failure scenarios"],
+    inspect: [
+      "webhook handlers",
+      "idempotency keys",
+      "ledger invariants",
+      "test-mode failure scenarios",
+    ],
     mentions: /idempoten|duplicate|refund|reconcil|partial.payment|webhook|retry/i,
   },
   {
@@ -65,7 +92,12 @@ const checks = [
     priority: "high",
     applies: "remote-url",
     question: "How are user-supplied URLs and redirects prevented from reaching private or untrusted destinations?",
-    inspect: ["SSRF policy", "redirect validation", "DNS/IP rules", "timeouts and response limits"],
+    inspect: [
+      "SSRF policy",
+      "redirect validation",
+      "DNS/IP rules",
+      "timeouts and response limits",
+    ],
     mentions: /ssrf|private.ip|redirect|dns|host.allowlist|url.validat/i,
   },
   {
@@ -73,7 +105,12 @@ const checks = [
     priority: "high",
     applies: "remote-url",
     question: "How does the result distinguish inspected facts from unvisited pages, failed fetches, and unknowns?",
-    inspect: ["fetch scope", "error states", "evidence provenance", "claim confidence"],
+    inspect: [
+      "fetch scope",
+      "error states",
+      "evidence provenance",
+      "claim confidence",
+    ],
     mentions: /scope|unknown|provenance|confidence|crawl|page.level|evidence/i,
   },
 ];
@@ -85,8 +122,12 @@ const triggers = {
 };
 
 function active(item) {
-  return item.review?.state !== "rejected" &&
-    (item.origin === "user_stated" || item.review?.state === "confirmed" || item.review?.state === "delegated");
+  return (
+    item.review?.state !== "rejected" &&
+    (item.origin === "user_stated" ||
+      item.review?.state === "confirmed" ||
+      item.review?.state === "delegated")
+  );
 }
 
 /** Input is a previously schema/provenance-validated TaskRecord. */
@@ -94,23 +135,34 @@ export function analyzeContextGaps(record) {
   const activeItems = record.items.filter(active);
   const scope = activeItems.map((i) => i.text).join("\n");
   const known = record.unknowns.filter((u) => u.status === "open");
-  const families = Object.fromEntries(Object.entries(triggers).map(([id, re]) => [id, re.test(scope)]));
-  const suppliedDocs = record.references.filter((r) => r.kind === "document" && r.availability === "supplied");
-  const candidates = checks.filter((c) => c.applies === "always" || families[c.applies]).map((c) => ({
-    id: c.id,
-    priority: c.priority,
-    classification: "candidate_question_not_a_defect",
-    question: c.question,
-    request_mentions_topic: c.mentions.test(scope),
-    proposed_inspection_targets: c.inspect,
-    evidence_status: "not_verified_by_this_pilot",
-  }));
+  const families = Object.fromEntries(
+    Object.entries(triggers).map(([id, re]) => [id, re.test(scope)]),
+  );
+  const suppliedDocs = record.references.filter(
+    (r) => r.kind === "document" && r.availability === "supplied",
+  );
+  const candidates = checks
+    .filter((c) => c.applies === "always" || families[c.applies])
+    .map((c) => ({
+      id: c.id,
+      priority: c.priority,
+      classification: "candidate_question_not_a_defect",
+      question: c.question,
+      request_mentions_topic: c.mentions.test(scope),
+      proposed_inspection_targets: c.inspect,
+      evidence_status: "not_verified_by_this_pilot",
+    }));
   return {
     experiment: "context-gap-preflight-v0",
     task_id: record.task_id,
     task_revision: record.revision,
     discovered_families: Object.keys(families).filter((f) => families[f]),
-    known_open_unknowns: known.map((u) => ({ id: u.id, question: u.question, blocks: u.blocks, next_action: u.next_action })),
+    known_open_unknowns: known.map((u) => ({
+      id: u.id,
+      question: u.question,
+      blocks: u.blocks,
+      next_action: u.next_action,
+    })),
     supplied_document_ids: suppliedDocs.map((r) => r.id),
     candidate_checks: candidates,
     limitations: [
