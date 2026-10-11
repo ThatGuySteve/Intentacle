@@ -1,0 +1,28 @@
+name: Temporary context preflight formatting
+on:
+  push:
+    branches:
+      - experiment/context-gap-preflight-v0
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: experiment/context-gap-preflight-v0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx prettier --write docs/context-gap-preflight-pilot.md experiments/context-preflight/analyze.mjs experiments/context-preflight/cli.mjs test/context-preflight.test.mjs
+      - name: Commit formatting if needed
+        run: |
+          git add docs/context-gap-preflight-pilot.md experiments/context-preflight/analyze.mjs experiments/context-preflight/cli.mjs test/context-preflight.test.mjs
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "style: apply repository Prettier to context preflight pilot"
+            git push origin HEAD:experiment/context-gap-preflight-v0
+          fi
