@@ -1,9 +1,9 @@
 # Context-preflight development evaluation (not an efficacy study)
 
-This harness measures the *known* lexical/checklist issues observed after PR #12.
-It does **not** certify that automatic context discovery works. It introduces no
-new product capability, network access, repository indexing, model provider,
-production data reads, schema changes, or model spending.
+This harness measures the _known_ lexical/checklist issues observed after PR
+#12. It does **not** certify that automatic context discovery works. It
+introduces no new product capability, network access, repository indexing, model
+provider, production data reads, schema changes, or model spending.
 
 ## Local runs
 
@@ -16,11 +16,11 @@ node experiments/context-preflight/evaluation/run.mjs --prepare > local/prefligh
 ```
 
 `--prepare` exports the same twelve source requests and contextual notes to be
-supplied to any comparison arm, but deliberately omits rubric annotations.
-Files in `local/` are ignored by Git. The default command scores the merged
-PR #12 implementation with the frozen **public development** rubric; it prints
-all cases, including false positives and omissions. Context notes are not read
-by the v0 analyzer, consistent with its actual limitations.
+supplied to any comparison arm, but deliberately omits rubric annotations. Files
+in `local/` are ignored by Git. The default command scores the merged PR #12
+implementation with the frozen **public development** rubric; it prints all
+cases, including false positives and omissions. Context notes are not read by
+the v0 analyzer, consistent with its actual limitations.
 
 To compare another approach, prepare a JSON file,
 `local/context-candidate.json`, with this format. `case_sha256` must exactly
@@ -41,17 +41,17 @@ Then run:
 node experiments/context-preflight/evaluation/run.mjs --candidate local/context-candidate.json
 ```
 
-All twelve cases must be included to avoid a missing-submission penalty.
-The comparison must not see the evaluator-only rubric, and must use exactly
-identical source context, access, and time/token budgets as its baseline.
-The allowed *topic labels* are coarse proxies for investigation relevance,
-not proven defects or missing requirements. A model predicting topics is
-**not** a model successfully retrieving, inspecting, or validating evidence.
+All twelve cases must be included to avoid a missing-submission penalty. The
+comparison must not see the evaluator-only rubric, and must use exactly
+identical source context, access, and time/token budgets as its baseline. The
+allowed _topic labels_ are coarse proxies for investigation relevance, not
+proven defects or missing requirements. A model predicting topics is **not** a
+model successfully retrieving, inspecting, or validating evidence.
 
 ## Current development-only baseline
 
-The twelve labeled scenarios produce the following counts for the current
-PR #12 rules (scored at topic level; broad universal checks are not scored):
+The twelve labeled scenarios produce the following counts for the current PR #12
+rules (scored at topic level; broad universal checks are not scored):
 
 - 5 relevant specialized topic flags.
 - 4 irrelevant topic flags.
@@ -59,26 +59,26 @@ PR #12 rules (scored at topic level; broad universal checks are not scored):
 - Precision 5/9; recall 5/11 on these hand-selected annotations.
 
 Examples: invoice-copy, button-color and dashboard-restyling requests trigger
-specialized checks inappropriately; API import, page navigation, same-page
-focus behavior and a keyboard modal expose unrecognized areas.
+specialized checks inappropriately; API import, page navigation, same-page focus
+behavior and a keyboard modal expose unrecognized areas.
 
 **These are not independent model performance results.** The cases were selected
-*after* discovering failures and the labels reflect researcher judgment.
-Scores may change with a different reasonable rubric; a model could simply
-memorize these public examples. No candidate/context-aware comparator has yet
-run. No downstream code quality, review time, or model cost was measured.
+_after_ discovering failures and the labels reflect researcher judgment. Scores
+may change with a different reasonable rubric; a model could simply memorize
+these public examples. No candidate/context-aware comparator has yet run. No
+downstream code quality, review time, or model cost was measured.
 
 ## Next credible test
 
 Gather fresh tasks and freeze the information ledger and hidden rubric
-**before** running. Compare (a) ordinary handoff, (b) current preflight, and
-(c) context-aware review using the same available evidence and budget.
-Record unsupported assertions, genuinely additional requirements, review burden,
+**before** running. Compare (a) ordinary handoff, (b) current preflight, and (c)
+context-aware review using the same available evidence and budget. Record
+unsupported assertions, genuinely additional requirements, review burden,
 latency, downstream task success, and total model/tool cost.
 
-The standing Intentacle [evaluation protocol](../../../docs/evaluation.md)
-has stricter 40-case and human-pilot continuation gates; this diagnostic
-does not replace or satisfy them.
+The standing Intentacle [evaluation protocol](../../../docs/evaluation.md) has
+stricter 40-case and human-pilot continuation gates; this diagnostic does not
+replace or satisfy them.
 
 ### Exit criterion
 

@@ -12,24 +12,17 @@
   "labels": [
     {
       "id": "record-player",
-      "expected": [
-        "interactive",
-        "accessibility"
-      ],
+      "expected": ["interactive", "accessibility"],
       "reason": "New physical-style controls require interaction states and accessible use."
     },
     {
       "id": "auto-invoice",
-      "expected": [
-        "financial"
-      ],
+      "expected": ["financial"],
       "reason": "Creates financial records at a commercial state transition."
     },
     {
       "id": "url-checker",
-      "expected": [
-        "remote-url"
-      ],
+      "expected": ["remote-url"],
       "reason": "Fetches user-supplied external addresses from a server."
     },
     {
@@ -49,31 +42,22 @@
     },
     {
       "id": "external-import",
-      "expected": [
-        "data-import"
-      ],
+      "expected": ["data-import"],
       "reason": "An outside API introduces schema, provenance, auth and retry concerns."
     },
     {
       "id": "navigation-audit",
-      "expected": [
-        "navigation"
-      ],
+      "expected": ["navigation"],
       "reason": "Routes and links require cross-page inspection."
     },
     {
       "id": "back-to-top",
-      "expected": [
-        "navigation",
-        "accessibility"
-      ],
+      "expected": ["navigation", "accessibility"],
       "reason": "Same-page navigation and keyboard focus behavior need verification."
     },
     {
       "id": "refund-webhook",
-      "expected": [
-        "financial"
-      ],
+      "expected": ["financial"],
       "reason": "Financial idempotency and ledger accuracy are implicated."
     },
     {
@@ -83,10 +67,7 @@
     },
     {
       "id": "keyboard-dialog",
-      "expected": [
-        "interactive",
-        "accessibility"
-      ],
+      "expected": ["interactive", "accessibility"],
       "reason": "Existing modal behavior and keyboard access are in scope."
     }
   ]
