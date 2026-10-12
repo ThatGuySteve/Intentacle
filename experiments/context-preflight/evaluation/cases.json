@@ -1,0 +1,126 @@
+{
+  "version": "development-1",
+  "notice": "Development cases selected after known failures. Not blind, not production readiness proof.",
+  "cases": [
+    {
+      "id": "record-player",
+      "request": "Make the record player interactive.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "A decorative vinyl player appears on a custom showcase website. The requester has not specified controls."
+        }
+      ]
+    },
+    {
+      "id": "auto-invoice",
+      "request": "Automatically generate an invoice when an approved estimate is ready for billing.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "The application already supports estimates, invoice transitions, and Stripe payments; implementation behavior is not supplied."
+        }
+      ]
+    },
+    {
+      "id": "url-checker",
+      "request": "Build a website checker that scans a URL supplied by a visitor.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "A public form submits a URL to a server-side fetch API. Fetch safeguards are not yet inspected."
+        }
+      ]
+    },
+    {
+      "id": "invoice-copy",
+      "request": "Change the paragraph explaining invoice payment terms.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "This is an editorial wording change only. Payment code and money movement must remain unchanged."
+        }
+      ]
+    },
+    {
+      "id": "button-color",
+      "request": "Change the color of the submit button.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "Only the existing control's visual styling is in scope. Do not modify button behavior."
+        }
+      ]
+    },
+    {
+      "id": "financial-dashboard-style",
+      "request": "Restyle the invoice dashboard summary cards; preserve all existing calculations.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "The request concerns presentation and layout, not invoice creation or financial operations."
+        }
+      ]
+    },
+    {
+      "id": "external-import",
+      "request": "Import data from an external API into a customer inventory list.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "The upstream schema, source authorization, duplicates and retry behavior have not been inspected."
+        }
+      ]
+    },
+    {
+      "id": "navigation-audit",
+      "request": "Review every page of the website for broken navigation and unreachable links.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "Multiple pages and routes exist. The complete route inventory is not supplied."
+        }
+      ]
+    },
+    {
+      "id": "back-to-top",
+      "request": "Add a mobile back-to-top link to the long article page.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "The page has long scrollable content. The interaction should return focus appropriately after navigation."
+        }
+      ]
+    },
+    {
+      "id": "refund-webhook",
+      "request": "Fix duplicate refund webhook processing when Stripe retries delivery.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "A payment event may be delivered repeatedly; ledger accuracy is an important invariant."
+        }
+      ]
+    },
+    {
+      "id": "heading-copy",
+      "request": "Change the homepage heading from Welcome to Get Started.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "A simple copy edit; no workflow or behavioral modification is requested."
+        }
+      ]
+    },
+    {
+      "id": "keyboard-dialog",
+      "request": "Fix the modal so keyboard users can close it and return focus to the opener.",
+      "context": [
+        {
+          "id": "brief",
+          "text": "The issue concerns keyboard operation of an existing interactive control."
+        }
+      ]
+    }
+  ]
+}
