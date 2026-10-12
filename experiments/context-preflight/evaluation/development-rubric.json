@@ -1,0 +1,93 @@
+{
+  "version": "development-1",
+  "notice": "Public development annotations, not hidden oracle. Expected topics are judgments for diagnostic calibration only.",
+  "topics": [
+    "interactive",
+    "financial",
+    "remote-url",
+    "data-import",
+    "navigation",
+    "accessibility"
+  ],
+  "labels": [
+    {
+      "id": "record-player",
+      "expected": [
+        "interactive",
+        "accessibility"
+      ],
+      "reason": "New physical-style controls require interaction states and accessible use."
+    },
+    {
+      "id": "auto-invoice",
+      "expected": [
+        "financial"
+      ],
+      "reason": "Creates financial records at a commercial state transition."
+    },
+    {
+      "id": "url-checker",
+      "expected": [
+        "remote-url"
+      ],
+      "reason": "Fetches user-supplied external addresses from a server."
+    },
+    {
+      "id": "invoice-copy",
+      "expected": [],
+      "reason": "Copy only: do not infer financial transaction changes from nouns in copy."
+    },
+    {
+      "id": "button-color",
+      "expected": [],
+      "reason": "Visual-only styling, not interaction implementation."
+    },
+    {
+      "id": "financial-dashboard-style",
+      "expected": [],
+      "reason": "Layout-only. Existing calculations unchanged."
+    },
+    {
+      "id": "external-import",
+      "expected": [
+        "data-import"
+      ],
+      "reason": "An outside API introduces schema, provenance, auth and retry concerns."
+    },
+    {
+      "id": "navigation-audit",
+      "expected": [
+        "navigation"
+      ],
+      "reason": "Routes and links require cross-page inspection."
+    },
+    {
+      "id": "back-to-top",
+      "expected": [
+        "navigation",
+        "accessibility"
+      ],
+      "reason": "Same-page navigation and keyboard focus behavior need verification."
+    },
+    {
+      "id": "refund-webhook",
+      "expected": [
+        "financial"
+      ],
+      "reason": "Financial idempotency and ledger accuracy are implicated."
+    },
+    {
+      "id": "heading-copy",
+      "expected": [],
+      "reason": "Simple text-only change."
+    },
+    {
+      "id": "keyboard-dialog",
+      "expected": [
+        "interactive",
+        "accessibility"
+      ],
+      "reason": "Existing modal behavior and keyboard access are in scope."
+    }
+  ]
+}
