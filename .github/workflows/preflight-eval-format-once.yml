@@ -1,0 +1,28 @@
+name: Temporary preflight evaluation formatting
+on:
+  push:
+    branches:
+      - experiment/context-preflight-evaluation
+permissions:
+  contents: write
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: experiment/context-preflight-evaluation
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx prettier --write experiments/context-preflight/evaluation test/context-preflight-evaluation.test.mjs
+      - name: Commit formatting if needed
+        run: |
+          git add experiments/context-preflight/evaluation test/context-preflight-evaluation.test.mjs
+          if ! git diff --cached --quiet; then
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "style: format context evaluation files"
+            git push origin HEAD:experiment/context-preflight-evaluation
+          fi
